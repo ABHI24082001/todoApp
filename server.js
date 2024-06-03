@@ -13,7 +13,6 @@ app.use(express.json());
 
 app.use("/api/v1/users", userRouter);
 
-// app.listen(8000,()=>{console.log(`port running at 800`)})
 
 const PORT = 8000;
 app.listen(PORT, () => {

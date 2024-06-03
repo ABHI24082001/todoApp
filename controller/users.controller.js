@@ -44,6 +44,33 @@ const loginUser = async (req , res) => {
 };
 
 
+const updateUser = async (req, res) => {
+  const { userId } = req.params;
+  const { name } = req.body;
+
+  console.log("Update User Params:", userId);
+  console.log("Update User Body:", name);
+
+  try {
+    const updatedUser = await Users.findByIdAndUpdate(
+      userId,
+      { name },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.send({ status: "error", data: "User not found" });
+    }
+
+    res.send({ status: "success", data: updatedUser });
+  } catch (error) {
+    res.send({ status: "error", data: error.message });
+  }
+};
+
+
+
+
 
  
-export { createUser ,  loginUser  };
+export { createUser, loginUser , updateUser };

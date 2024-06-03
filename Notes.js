@@ -37,4 +37,15 @@ fs.unlink("c/loacal/disk", "hyy Sonu", function () {
 });
 
 
+fs.readFile("c/loacal/disk", "hyy Sonu", function(){
+  if (err){
+    console.log("Error", err);
+  }else{
+    console.log(result);
+  }
+})
+
+fs.appendFileSync("c/loacal/disk", new Date().getTime().toLocaleString());
+
+
 

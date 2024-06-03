@@ -23,4 +23,6 @@ UserDetailsSchema.methods.isPasswordMatched = async function(password){
 }
 
 
+
+
 export const Users = mongoose.model("Users", UserDetailsSchema);
