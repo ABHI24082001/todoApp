@@ -1,13 +1,9 @@
-
 import { Users } from "../models/users.models.js";
 import jwt from "jsonwebtoken";
-import crypto from 'crypto';
-import bcrypt from 'bcrypt';
+import crypto from "crypto";
+import bcrypt from "bcrypt";
 import { PasswordResetToken } from "../models/passwordResetToken.js";
 import sendEmail from "../utils/sendEmail.js";
-
-
-
 
 const createUser = async (req, res) => {
   const email = req.body.email;
@@ -26,28 +22,32 @@ const createUser = async (req, res) => {
   }
 };
 
-
-const loginUser = async (req , res) => {
-  const {email,password} = req.body;
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
   try {
-    const user = await Users.findOne({email: email})
-    if (!user){
-      return res.send({status: 'error', data: 'User not found'});
+    const user = await Users.findOne({ email: email });
+    if (!user) {
+      return res.send({ status: "error", data: "User not found" });
     }
-   const matched = user.isPasswordMatched(user.password)  
+    const matched = user.isPasswordMatched(user.password);
     if (!matched) {
       return res.send({ status: "error", data: "Invalid password" });
-    }    
-    const token = jwt.sign({userId: user._id , email: user.email}, "your_secret_key" ,{
-      expiresIn: "1h",
+    }
+    const token = jwt.sign(
+      { userId: user._id, email: user.email },
+      "your_secret_key",
+      {
+        expiresIn: "1h",
+      }
+    );
+    res.send({
+      status: "success",
+      data: { token: token, message: "Login successful " },
     });
-    res.send({status: 'success', data: {token: token, message: "Login successful "}});
   } catch (error) {
-    res.send({status: 'error', data:error.message});  
+    res.send({ status: "error", data: error.message });
   }
-
 };
-
 
 const updateUser = async (req, res) => {
   const { userId } = req.params;
@@ -73,23 +73,6 @@ const updateUser = async (req, res) => {
   }
 };
 
-
-const viewProfile = async (req, res) => {
-  const { userId } = req.params;
-
-  try {
-    const user = await Users.findById(userId).select("-password");
-
-    if (!user) {
-      return res.send({ status: "error", data: "User not found" });
-    }
-
-    res.send({ status: "success", data: user });
-  } catch (error) {
-    res.send({ status: "error", data: error.message });
-  }
-};
-
 const Deleted = async (req, res) => {
   const { userId } = req.params;
 
@@ -107,7 +90,6 @@ const Deleted = async (req, res) => {
     res.send({ status: "error", data: error.message });
   }
 };
-
 
 const forgotPassword = async (req, res) => {
   const { email } = req.body;
@@ -144,7 +126,6 @@ const forgotPassword = async (req, res) => {
   }
 };
 
-
 const resetPassword = async (req, res) => {
   const { token } = req.params;
   const { newPassword } = req.body;
@@ -153,12 +134,10 @@ const resetPassword = async (req, res) => {
     // Find the token in the database
     const resetTokenDoc = await PasswordResetToken.findOne({ token });
     if (!resetTokenDoc) {
-      return res
-        .status(400)
-        .send({
-          status: "error",
-          data: "Invalid or expired password reset token",
-        });
+      return res.status(400).send({
+        status: "error",
+        data: "Invalid or expired password reset token",
+      });
     }
 
     // Find the user associated with the token
@@ -179,7 +158,106 @@ const resetPassword = async (req, res) => {
     res.status(500).send({ status: "error", data: error.message });
   }
 };
- 
+
+const logoutUser = async (req, res) => {
+  const { userId } = req.params;
+  res.send({ status: "success", data: "User logged out successfully" });
+};
+
+
+const viewProfile = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const user = await Users.findById(userId).select("-password");
+
+    if (!user) {
+      return res.send({ status: "error", data: "User not found" });
+    }
+
+    res.send({ status: "success", data: user });
+  } catch (error) {
+    res.send({ status: "error", data: error.message });
+  }
+};
+
+
+
+const updateUserProfile = async (req, res) => {
+  const { userId } = req.params;
+  const { name, email, password } = req.body;
+
+  try {
+    // Find the user by ID
+    const user = await Users.findById(userId);
+    if (!user) {
+      return res.send({ status: "error", data: "User not found" });
+    }
+
+    // Update user fields if provided
+    if (name) user.name = name;
+    if (email) user.email = email;
+    if (password) user.password = await bcrypt.hash(password, 10);
+
+    // Save the updated user
+    await user.save();
+
+    res.send({ status: "success", data: "User profile updated successfully" });
+  } catch (error) {
+    res.send({ status: "error", data: error.message });
+  }
+};
+
+const deleteUserProfile = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    // Find the user by ID and delete
+    const user = await Users.findByIdAndDelete(userId);
+    if (!user) {
+      return res.send({ status: "error", data: "User not found" });
+    }
+
+    res.send({ status: "success", data: "User profile deleted successfully" });
+  } catch (error) {
+    res.send({ status: "error", data: error.message });
+  }
+};
+
+const getAllProducts = async () => {
+  const { userId } = req.params;
+};
+
+const getProductById = async () => {
+  const { userId } = req.params;
+};
+
+const addProduct = async () => {
+  const { userId } = req.params;
+};
+
+const updateProduct = async () => {
+  const { userId } = req.params;
+};
+
+const deleteProduct = async () => {
+  const { userId } = req.params;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export {
   createUser,
   loginUser,
@@ -188,4 +266,12 @@ export {
   Deleted,
   forgotPassword,
   resetPassword,
+  logoutUser,
+  updateUserProfile,
+  deleteUserProfile,
+  getAllProducts,
+  getProductById,
+  addProduct,
+  updateProduct,
+  deleteProduct,
 };
