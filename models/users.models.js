@@ -7,6 +7,7 @@ const UserDetailsSchema = new mongoose.Schema({
     mobile : String,
     password : String,
     createdAt : String,
+    newPassword: String,
 },{
     timestamps: true
 });
