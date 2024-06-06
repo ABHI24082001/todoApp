@@ -47,12 +47,35 @@ const addProduct = async (req, res) => {
   }
 };
 
-const updateProduct = async () => {
-  const { userId } = req.params;
+const updateProduct = async (req, res) => {
+  const { id } = req.params;
+  const { name, price, details } = req.body;
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      id,
+      { name, price, details },
+      { new: true }
+    );
+    if (!updatedProduct) {
+      return res.send({ status: "error", data: "Product not found" });
+    }
+    res.send({ status: "success", data: updatedProduct });
+  } catch (error) {
+    res.send({ status: "error", data: error.message });
+  }
 };
 
-const deleteProduct = async () => {
-  const { userId } = req.params;
+const deleteProduct = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if (!deletedProduct) {
+      return res.send({ status: "error", data: "Product not found" });
+    }
+    res.send({ status: "success", data: "Product deleted successfully" });
+  } catch (error) {
+    res.send({ status: "error", data: error.message });
+  }
 };
 
 export {
