@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import userRouter  from './routes/user.routes.js'
 import productRouter from './routes/product.routes.js'
-
+import CategoryRouter from './routes/category.routes.js'
 
 
 
@@ -20,6 +20,7 @@ app.use(express.json());
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/users", productRouter)
+app.use("/api/v1/users", CategoryRouter);
 
 
 const PORT = 8000;
