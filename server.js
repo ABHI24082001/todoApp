@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import userRouter  from './routes/user.routes.js'
 import productRouter from './routes/product.routes.js'
 import CategoryRouter from './routes/category.routes.js'
+import Order from  './routes/orderss.routes.js'
 
 
 
@@ -21,6 +22,7 @@ app.use(express.json());
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/users", productRouter)
 app.use("/api/v1/users", CategoryRouter);
+app.use("/api/v1/users", Order);
 
 
 const PORT = 8000;
