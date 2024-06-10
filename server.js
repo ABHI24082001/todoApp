@@ -8,6 +8,7 @@ import productRouter from './routes/product.routes.js'
 import CategoryRouter from './routes/category.routes.js'
 import Order from  './routes/orderss.routes.js'
 import Cart from './routes/cart.routes.js'
+import Review from './routes/review.routes.js'
 
 
 
@@ -25,6 +26,7 @@ app.use("/api/v1/users", productRouter)
 app.use("/api/v1/users", CategoryRouter);
 app.use("/api/v1/users", Order);
 app.use("/api/v1/users", Cart);
+app.use("/api/v1/users", Review);
 
 
 const PORT = 8000;

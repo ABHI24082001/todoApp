@@ -9,7 +9,7 @@ import {
 
 const router = Router();
 
-// All Product
+
 
 router.get("/products", getAllProducts);
 router.get("/products/:id", getProductById);
