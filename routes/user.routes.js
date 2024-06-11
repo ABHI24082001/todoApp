@@ -10,7 +10,6 @@ import {
   logoutUser,
   updateUserProfile,
   deleteUserProfile,
-  
 } from "../controller/users.controller.js";
 
 const router = Router()

@@ -224,25 +224,7 @@ const deleteUserProfile = async (req, res) => {
   }
 };
 
-const getAllProducts = async () => {
-  const { userId } = req.params;
-};
 
-const getProductById = async () => {
-  const { userId } = req.params;
-};
-
-const addProduct = async () => {
-  const { userId } = req.params;
-};
-
-const updateProduct = async () => {
-  const { userId } = req.params;
-};
-
-const deleteProduct = async () => {
-  const { userId } = req.params;
-};
 
 
 
@@ -269,9 +251,4 @@ export {
   logoutUser,
   updateUserProfile,
   deleteUserProfile,
-  getAllProducts,
-  getProductById,
-  addProduct,
-  updateProduct,
-  deleteProduct,
 };
