@@ -10,6 +10,13 @@ const taskSchema = new mongoose.Schema({
   description: { type: String },
   dueDate: { type: Date },
   reminder: { type: Boolean, default: false },
+  priority: {
+    type: String,
+    enum: ["high", "medium", "low"],
+    default: "medium",
+  },
+  categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
+  tagIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
   subtasks: [subtaskSchema],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
