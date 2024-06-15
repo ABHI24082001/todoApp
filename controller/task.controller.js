@@ -1,4 +1,5 @@
 import Task from "../models/task.models.js";
+import calculateProgress from "../utils/calculateProgress.js"
 
 const createTask = async (req, res) => {
   const {
@@ -61,7 +62,9 @@ const updateTask = async (req, res) => {
     tagIds,
     subtasks,
   } = req.body;
+
   try {
+    const progress = calculateProgress(subtasks || []);
     const task = await Task.findByIdAndUpdate(
       taskId,
       {
@@ -73,6 +76,7 @@ const updateTask = async (req, res) => {
         categoryId,
         tagIds,
         subtasks,
+        progress,
         updatedAt: Date.now(),
       },
       { new: true }
@@ -99,4 +103,36 @@ const deleteTask = async (req, res) => {
   }
 };
 
-export { createTask, getAllTasks, getTaskById, updateTask, deleteTask };
+const searchAndFilterTasks = async (req, res) => {
+  const { title, dueDate, reminder, priority, categoryId, tagIds } = req.query;
+
+  let filter = {};
+
+  if (title) {
+    filter.title = { $regex: title, $options: "i" }; // case-insensitive regex search
+  }
+  if (dueDate) {
+    filter.dueDate = new Date(dueDate);
+  }
+  if (reminder) {
+    filter.reminder = reminder === "true";
+  }
+  if (priority) {
+    filter.priority = priority;
+  }
+  if (categoryId) {
+    filter.categoryId = categoryId;
+  }
+  if (tagIds) {
+    filter.tagIds = { $in: tagIds.split(",") }; // assuming tagIds are comma-separated
+  }
+
+  try {
+    const tasks = await Task.find(filter);
+    res.send({ status: "success", data: tasks });
+  } catch (error) {
+    res.status(500).send({ status: "error", data: error.message });
+  }
+};
+
+export { createTask, getAllTasks, getTaskById, updateTask, deleteTask , searchAndFilterTasks };

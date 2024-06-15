@@ -18,6 +18,9 @@ const taskSchema = new mongoose.Schema({
   categoryId: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
   tagIds: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
   subtasks: [subtaskSchema],
+  progress: { type: Number, default: 0 },
+  assignedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+  sharedWith: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

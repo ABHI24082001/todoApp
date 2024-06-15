@@ -7,6 +7,8 @@ import userRouter from "./routes/user.routes.js";
 import Task from "./routes/task.routes.js";
 import Category from "./routes/category.routes.js";
 import Tag from "./routes/tag.routes.js"
+import CollaborationRouter from "./routes/collaboration.routes.js";
+import Notes from "./routes/note.routes.js"
 
 const app = express();
 dbConnect();
@@ -19,8 +21,10 @@ app.use(express.json());
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/tasks", Task);
-app.use("/api/v1/categories", Category); // Corrected the path
-app.use("/api/v1/tags", Tag); // Corrected the path
+app.use("/api/v1/categories", Category); 
+app.use("/api/v1/tags", Tag); 
+app.use("/api/v1/collaboration", CollaborationRouter);
+app.use("/api/v1/notes", Notes); 
 
 
 const PORT = 8000;
