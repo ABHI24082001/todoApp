@@ -9,6 +9,7 @@ import Category from "./routes/category.routes.js";
 import Tag from "./routes/tag.routes.js"
 import CollaborationRouter from "./routes/collaboration.routes.js";
 import Notes from "./routes/note.routes.js"
+import mediaRouter from "./routes/media.routes.js";
 
 const app = express();
 dbConnect();
@@ -25,6 +26,8 @@ app.use("/api/v1/categories", Category);
 app.use("/api/v1/tags", Tag); 
 app.use("/api/v1/collaboration", CollaborationRouter);
 app.use("/api/v1/notes", Notes); 
+app.use("/api/v1/media", mediaRouter);
+app.use("/uploads" , express.static("uploads"))
 
 
 const PORT = 8000;
